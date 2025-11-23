@@ -1,0 +1,81 @@
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Spring Boot ###
+*.log
+logs/
+*.pid
+*.seed
+*.out
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VSCode
+.vscode/
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+
+### Environment / Security ###
+.env
+*.key
+*.pem
+*.cert
+application-local.yml
+application-dev.yml
+application-test.yml
+
+### Postman ###
+postman/*.zip
+postman/*-collection.json
+
+### Docker ###
+docker-data/
+**/docker-compose.override.yml
+
+### Redis / Kafka / DB Data ###
+data/
+redis-data/
+kafka-data/
+zookeeper-data/
+postgres-data/
+
+### Web ###
+node_modules/
+dist/
+build/
+
+### Tests ###
+surefire-reports/
+test-output/
+
+### Coverage ###
+coverage/
+*.lcov
+*.exec
+
+### Misc ###
+*.tmp
+*.swp
+*.bak

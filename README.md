@@ -1,6 +1,6 @@
 # Real-Time Chat Messaging System
 
-A production-grade backend for WhatsApp-style real-time messaging, designed with scalable distributed system patterns, event-driven architecture, and observability tooling. The system supports multi-node WebSocket fan-out, Kafka-based persistence pipeline, offline message sync, delivery/read receipts, session replication through Redis, and fault-tolerant processing with DLQ.
+WhatsApp-style real-time messaging, designed with scalable distributed system patterns, event-driven architecture, and observability tooling. The system supports multi-node WebSocket fan-out, Kafka-based persistence pipeline, offline message sync, delivery/read receipts, session replication through Redis, and fault-tolerant processing with DLQ.
 
 ---
 
@@ -107,12 +107,12 @@ docker compose up -d
 ### Start chat service node-1
 ```bash
 mvn clean package
-java -jar target/chat-service-0.0.1-SNAPSHOT.jar --server.port=8080 --ws.node-id=node-1
+java -jar target/chat-0.0.1-SNAPSHOT.jar --server.port=8080 --ws.node-id=node-1
 ```
 
 ### Optional node-2
 ```bash
-java -jar target/chat-service-0.0.1-SNAPSHOT.jar --server.port=8081 --ws.node-id=node-2
+java -jar target/chat-0.0.1-SNAPSHOT.jar --server.port=8081 --ws.node-id=node-2
 ```
 
 ---
@@ -166,12 +166,6 @@ chat_ws_active_sessions
 - E2E encryption
 - Search / indexing layer
 
----
-
-## 📎 Resume Summary
-```
-Designed and implemented a distributed real-time chat backend supporting multi-node WebSocket fan-out, Kafka event-driven messaging, Redis pub/sub replication, and delivery/read receipt tracking with offline sync and DLQ fault recovery. Added observability with Prometheus & Grafana and achieved <80–120ms p95 latency under load. Built with production scalability principles aligned to SDE-2/SDE-3 system design expectations.
-```
 
 ---
 
@@ -288,48 +282,5 @@ Add panels visually:
 Upload exported collection as:
 ```
 /postman/realtime-chat-collection.json
-```
-
----
-
-## Interview Explanations
-### Why Kafka instead of direct DB write?
-- decouples persistence from delivery pipeline
-- absorbs traffic spikes via backpressure
-- message durability & compression
-- batching & async processing improve latency
-
-### Why Redis pub/sub instead of Kafka for fanout?
-- WebSocket fanout requires microsecond push latency
-- Kafka is not suited for 1→N instant fanout to subscribed consumers
-- Redis is cheap & efficient for ephemeral routing events
-
-### Why idempotency with clientMessageId?
-- solves duplicate send attempts due to retries
-- ensures exactly-once processing semantics
-
-### How system scales to 10M users?
-| Layer | Scaling method |
-|--------|----------------|
-| WS | add nodes behind LB |
-| Kafka | partitions + consumer scaling |
-| DB | sharding message table |
-| Redis | cluster & sharding |
-| Attachments | object storage + CDN |
-
----
-
-## Final Notes
-This project demonstrates:
-- understanding of scalable distributed system design
-- real-world reliability patterns: idempotency, DLQ, backpressure
-- observability and tracing maturity
-- resume-ready measurable NFRs
-- clarity in architecture + implementation
-
----
-
-##  Author
-**Punith S** — Software Development Engineer
 ```
 

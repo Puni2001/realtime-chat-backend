@@ -78,7 +78,7 @@ public class MessageService {
     }
 
     public List<Message> getMessages(Long userId, Long chatId, int limit) {
-        // ensure user is allowed
+
         Chat chat = chatService.getChatForUserOrThrow(chatId, userId);
         return messageRepository.findByChatOrderByCreatedAtDesc(chat, PageRequest.of(0, limit));
     }
@@ -141,10 +141,10 @@ public class MessageService {
     }
 
     public List<ChatSummaryResponse> getChatSummaries(Long userId) {
-        // all chats user participates in
+
         List<Chat> chats = chatService.getChatsForUserAsChats(userId);
 
-        // unread counts per chat
+
         List<Object[]> counts = messageReceiptRepository.findUnreadCountsPerChat(userId);
         java.util.Map<Long, Long> unreadByChatId = new java.util.HashMap<>();
         for (Object[] row : counts) {
@@ -156,7 +156,7 @@ public class MessageService {
         java.util.List<ChatSummaryResponse> result = new java.util.ArrayList<>();
 
         for (Chat chat : chats) {
-            // last message in chat
+
             List<Message> latest = messageRepository.findByChatOrderByCreatedAtDesc(
                     chat, PageRequest.of(0, 1)
             );
@@ -179,12 +179,12 @@ public class MessageService {
             ));
         }
 
-        // optional: sort so chats with unread appear first, then by last message time
+
         result.sort((a, b) -> {
             int cmpUnread = Long.compare(b.unreadCount(), a.unreadCount());
             if (cmpUnread != 0) return cmpUnread;
 
-            // compare lastMessageCreatedAt descending
+
             if (a.lastMessageCreatedAt() == null && b.lastMessageCreatedAt() == null) return 0;
             if (a.lastMessageCreatedAt() == null) return 1;
             if (b.lastMessageCreatedAt() == null) return -1;

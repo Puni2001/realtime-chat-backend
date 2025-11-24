@@ -27,7 +27,6 @@ public class UserHandshakeInterceptor implements HandshakeInterceptor {
 
         return true;
     }
-  // add
     @Override
     public void afterHandshake(ServerHttpRequest request,
                                ServerHttpResponse response,

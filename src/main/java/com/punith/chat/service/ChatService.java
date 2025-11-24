@@ -51,7 +51,7 @@ public class ChatService {
             ChatParticipant cp = new ChatParticipant();
             cp.setChat(savedChat);
             cp.setUser(usersById.get(userId));
-            // creator is admin for groups
+
             if (isGroup && userId.equals(creatorUserId)) {
                 cp.setRole("admin");
             } else {

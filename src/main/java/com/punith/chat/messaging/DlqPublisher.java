@@ -55,14 +55,13 @@ public class DlqPublisher {
             return;
         }
 
-        // if no key, we can still send; Kafka allows null keys
         ProducerRecord<String, String> record = new ProducerRecord<>(dlqTopic, originalKey, value);
 
         kafkaTemplate.send(record).whenComplete((result, ex) -> {
             if (ex != null) {
                 log.error("Failed to publish message to DLQ topic {}", dlqTopic, ex);
             } else {
-                dlqMessagesCounter.increment();  // count only successful DLQ publishes
+                dlqMessagesCounter.increment();
                 log.warn("Sent message to DLQ topic={}, partition={}, offset={}",
                         result.getRecordMetadata().topic(),
                         result.getRecordMetadata().partition(),

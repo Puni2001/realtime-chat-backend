@@ -75,12 +75,12 @@ public class ChatMessageConsumer {
             );
             wsFanoutPublisher.publishNewMessage(fanoutEvent);
 
-            // 🔹 increment success counter
+
             messagesProcessedCounter.increment();
 
         } catch (Exception e) {
             log.error("Failed to process chat message event, payload={}", value, e);
-            messagesFailedCounter.increment();  // 🔹 failed
+            messagesFailedCounter.increment();
 
             dlqPublisher.sendToDlq(
                     "chat.messages.dlq",

@@ -71,12 +71,12 @@ public class ReadReceiptConsumer {
 
             wsFanoutPublisher.publishReadReceipt(fanoutEvent);
 
-            // 🔹 success
+
             readProcessedCounter.increment();
 
         } catch (Exception e) {
             log.error("Failed to process read receipt event, payload={}", value, e);
-            readFailedCounter.increment();   // 🔹 failed
+            readFailedCounter.increment();
 
             dlqPublisher.sendToDlq(
                     "chat.read-receipts.dlq",

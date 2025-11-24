@@ -20,14 +20,14 @@ public interface MessageReceiptRepository extends JpaRepository<MessageReceipt, 
 
     List<MessageReceipt> findByMessage(Message message);
 
-    // Unread receipts for a user in a given chat, oldest first
+
     List<MessageReceipt> findByUserAndMessageChatAndReadTimestampIsNullOrderByMessageCreatedAtAsc(
             User user,
             Chat chat,
             org.springframework.data.domain.Pageable pageable
     );
 
-    // Unread counts per chat for a user
+
     @Query("""
        select mr.message.chat.id as chatId, count(mr) as unreadCount
        from MessageReceipt mr

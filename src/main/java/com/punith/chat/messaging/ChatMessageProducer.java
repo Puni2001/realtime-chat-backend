@@ -24,7 +24,7 @@ public class ChatMessageProducer {
     }
 
     public void sendMessageEvent(ChatMessageEvent event) {
-        String key = event.chatId().toString(); // partition by chatId
+        String key = event.chatId().toString();
         String value;
         try {
             value = objectMapper.writeValueAsString(event);

@@ -62,7 +62,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         this.redisSessionService = redisSessionService;
         this.objectMapper = objectMapper;
         this.nodeId = nodeId;
-        // 🔹 register gauge: active WebSocket sessions on THIS node
+
         Gauge.builder("chat_ws_active_sessions", this, ChatWebSocketHandler::totalActiveSessions)
                 .description("Number of active WebSocket sessions on this node")
                 .tag("nodeId", nodeId)
@@ -88,12 +88,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         Long userId = Long.parseLong(userIdHeader);
         session.getAttributes().put("userId", userId);
 
-        // local in-memory map (for fast fan-out on this node)
+
         userSessions
                 .computeIfAbsent(userId, id -> new java.util.concurrent.CopyOnWriteArraySet<>())
                 .add(session);
 
-        // 🔹 new: register in Redis for cluster-wide tracking
+
         redisSessionService.registerSession(userId, session.getId(), nodeId);
 
         log.info("WebSocket connected: userId={}, session={}, nodeId={}", userId, session.getId(), nodeId);
@@ -105,7 +105,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         if (userIdObj != null) {
             Long userId = (Long) userIdObj;
 
-            // local cleanup
+
             java.util.Set<WebSocketSession> sessions = userSessions.get(userId);
             if (sessions != null) {
                 sessions.remove(session);
@@ -114,7 +114,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 }
             }
 
-            // 🔹 new: unregister from Redis
+
             redisSessionService.unregisterSession(userId, session.getId());
 
             log.info("WebSocket disconnected: userId={}, session={}, nodeId={}, status={}",
@@ -285,7 +285,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    // called by Redis WsFanoutSubscriber for NEW_MESSAGE
+
     public void broadcastNewMessageFanout(NewMessageFanoutEvent event) {
         NewMessagePayload payload = new NewMessagePayload(
                 event.messageId(),
@@ -295,7 +295,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 event.createdAtIso()
         );
 
-        // get participants from DB
+
         java.util.List<com.punith.chat.domain.chat.ChatParticipant> participantEntities =
                 chatService.getParticipantsForChat(event.chatId());
 
@@ -315,7 +315,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    // called by Redis WsFanoutSubscriber for READ_RECEIPT
+
     public void broadcastReadReceiptFanout(ReadReceiptFanoutEvent event) {
         ReadReceiptPayload payload = new ReadReceiptPayload(
                 event.chatId(),
@@ -339,7 +339,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             }
         }
     }
-    // Called by WsFanoutSubscriber when a message status update is published
+
     public void broadcastMessageStatusFanout(MessageStatusFanoutEvent event) {
         MessageStatusPayload payload = new MessageStatusPayload(
                 event.messageId(),
@@ -347,7 +347,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 event.status()
         );
 
-        Long targetUserId = event.userId(); // usually sender
+        Long targetUserId = event.userId();
 
         java.util.Set<org.springframework.web.socket.WebSocketSession> sessions = userSessions.get(targetUserId);
         if (sessions == null) {
@@ -422,7 +422,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     public record MessageStatusPayload(
             Long messageId,
             Long chatId,
-            String status  // e.g. "DELIVERED"
+            String status
     ) {}
 
 }

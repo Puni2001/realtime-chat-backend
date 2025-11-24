@@ -24,7 +24,7 @@ public class ReadReceiptProducer {
     }
 
     public void send(ReadReceiptEvent event) {
-        String key = event.chatId().toString(); // partition by chatId again
+        String key = event.chatId().toString();
         String value;
         try {
             value = objectMapper.writeValueAsString(event);

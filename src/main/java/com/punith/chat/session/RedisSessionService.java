@@ -25,10 +25,10 @@ public class RedisSessionService {
     public void registerSession(Long userId, String sessionId, String nodeId) {
         long now = Instant.now().toEpochMilli();
 
-        // add session to user's set
+
         redisTemplate.opsForSet().add(userSessionsKey(userId), sessionId);
 
-        // store metadata for this session
+
         String key = sessionKey(sessionId);
         redisTemplate.opsForHash().put(key, "userId", userId.toString());
         redisTemplate.opsForHash().put(key, "nodeId", nodeId);
@@ -36,9 +36,8 @@ public class RedisSessionService {
     }
 
     public void unregisterSession(Long userId, String sessionId) {
-        // remove from user's set
+
         redisTemplate.opsForSet().remove(userSessionsKey(userId), sessionId);
-        // delete metadata
         redisTemplate.delete(sessionKey(sessionId));
     }
 }

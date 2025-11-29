@@ -280,6 +280,8 @@ Add panels visually:
 - Sample message flows with expected results
 
 ```
-realtime_chat_postman_collection.json
+https://web.postman.co/workspace/My-Workspace~973e7165-970e-444b-876f-5af74d823fb4/collection/6921e9eac6a98eec4a83d39c?action=share&source=copy-link&creator=43067157
+
+https://web.postman.co/workspace/My-Workspace~973e7165-970e-444b-876f-5af74d823fb4/collection/43067157-1e3aac63-7cf7-49aa-902b-850f080d22b4?action=share&source=copy-link&creator=43067157
 ```
 

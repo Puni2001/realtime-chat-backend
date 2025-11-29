@@ -280,6 +280,6 @@ Add panels visually:
 - Sample message flows with expected results
 
 ```
-/realtime_chat_postman_collection.json
+realtime_chat_postman_collection.json
 ```
 

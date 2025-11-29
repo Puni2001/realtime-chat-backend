@@ -79,3 +79,6 @@ coverage/
 *.tmp
 *.swp
 *.bak
+
+.postman
+postman

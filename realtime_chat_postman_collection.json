@@ -1,0 +1,194 @@
+{
+	"info": {
+		"_postman_id": "1e3aac63-7cf7-49aa-902b-850f080d22b4",
+		"name": "realtime-chat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "43067157"
+	},
+	"item": [
+		{
+			"name": "Create User 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json();",
+							"pm.environment.set(\"user1Id\", body.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"displayName\": \"User 1\",\n  \"phone\": \"1111111111\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json();",
+							"pm.environment.set(\"user2Id\", body.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"displayName\": \"User 2\",\n  \"phone\": \"2222222222\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Chat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const body = pm.response.json();",
+							"pm.environment.set(\"chatId\", body.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Id",
+						"value": "{{user1Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Perf Chat\",\n  \"isGroup\": false,\n  \"participantIds\": [ {{user2Id}} ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/chats"
+			},
+			"response": []
+		},
+		{
+			"name": "Send Message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Id",
+						"value": "{{user1Id}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"body\": \"perf message\",\n  \"clientMessageId\": \"load-{{$guid}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/chats/{{chatId}}/messages"
+			},
+			"response": []
+		},
+		{
+			"name": "Chat Summary",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-User-Id",
+						"value": "{{user2Id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}/chats/summary"
+			},
+			"response": []
+		},
+		{
+			"name": "Unread count",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-User-Id",
+						"value": "{{user2Id}}",
+						"type": "text"
+					}
+				],
+				"url": "{{baseUrl}}/chats/{{chatId}}/messages/unread"
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

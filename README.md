@@ -279,8 +279,7 @@ Add panels visually:
 - WS test interactions
 - Sample message flows with expected results
 
-Upload exported collection as:
 ```
-/postman/realtime-chat-collection.json
+/realtime_chat_postman_collection.json
 ```
 
